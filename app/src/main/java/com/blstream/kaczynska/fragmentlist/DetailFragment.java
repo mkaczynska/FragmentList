@@ -2,33 +2,41 @@ package com.blstream.kaczynska.fragmentlist;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-/**
- * Created by user on 10-Mar-16.
- */
+
 public class DetailFragment extends Fragment {
 
     ImageView detailedImageView;
-    @Nullable
+    TextView detailedTextView;
+    Item item;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.detailfragment_layout, container, false);
+
+        View view = inflater.inflate(R.layout.detailfragment_layout, container, false);
+        savedInstanceState = this.getArguments();
+        item = (Item) savedInstanceState.getSerializable("selected_item");
+
+        detailedTextView = (TextView) view.findViewById(R.id.detailedItemTitle);
+        detailedTextView.setText(item.getTitle());
+
+        detailedImageView = (ImageView) view.findViewById(R.id.detailedImageView);
+        detailedImageView.setImageResource(item.getImage());
+        return view;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if(savedInstanceState != null) {
-            Item item = (Item) savedInstanceState.getSerializable("item_selected_key");
-            detailedImageView = (ImageView) getActivity().findViewById(R.id.detailedImageView);
-            detailedImageView.setImageDrawable(item.getImage());
-        }
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // Save the current article selection in case we need to recreate the fragment
+        outState.putSerializable("selected_item", item);
     }
 
 }
