@@ -2,12 +2,9 @@ package com.blstream.kaczynska.fragmentlist;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
@@ -96,6 +92,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         try {
             d = Drawable.createFromStream(assetManager.open(imageName), null); //FIXME ???
+            //
+//            LRUCacheManager lruCacheManager = new LRUCacheManager();
+//            final Bitmap bitmap = getBitmapFromMemCache(imageKey);
+//            if (bitmap != null) {
+//                mImageView.setImageBitmap(bitmap);
+//            } else {
+//                mImageView.setImageResource(R.drawable.image_placeholder);
+//                BitmapWorkerTask task = new BitmapWorkerTask(mImageView);
+//                task.execute(resId);
+//            }
+//
             Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
             resizedBitmap = Bitmap.createScaledBitmap(bitmap, outWidth, outHeight, false);
         } catch (IOException e) {
@@ -117,10 +124,5 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         ImageLoaderFromAssets asyncLoaderTask = new ImageLoaderFromAssets(imageView);
         asyncLoaderTask.execute(asyncParams);
         imageView.setTag(asyncLoaderTask);
-
-
-//        ImageLoaderParam asyncParams = new ImageLoaderParam(item.getImage(), RES, RES); // TODO rozmiar powinien byc wyciagany z rozmiaru kontrolki
-//        ImageLoaderFromAssets asyncLoaderTask = new ImageLoaderFromAssets(imageView);
-//        asyncLoaderTask.execute(asyncParams);
     }
 }
