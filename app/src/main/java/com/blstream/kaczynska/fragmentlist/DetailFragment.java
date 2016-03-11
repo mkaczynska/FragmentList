@@ -1,6 +1,4 @@
 package com.blstream.kaczynska.fragmentlist;
-
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,25 +7,29 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import static com.blstream.kaczynska.fragmentlist.MyAdapter.loadImage;
+
 
 public class DetailFragment extends Fragment {
 
     ImageView detailedImageView;
     TextView detailedTextView;
     Item item;
+    private final static int RES = 100;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.detailfragment_layout, container, false);
-        savedInstanceState = this.getArguments();
-        item = (Item) savedInstanceState.getSerializable("selected_item");
+        Bundle bundle = this.getArguments();
+        item = bundle.getParcelable("selected_item");
 
         detailedTextView = (TextView) view.findViewById(R.id.detailedItemTitle);
         detailedTextView.setText(item.getTitle());
 
         detailedImageView = (ImageView) view.findViewById(R.id.detailedImageView);
-        detailedImageView.setImageResource(item.getImage());
+        loadImage(item, detailedImageView);
         return view;
     }
 
@@ -36,7 +38,7 @@ public class DetailFragment extends Fragment {
         super.onSaveInstanceState(outState);
 
         // Save the current article selection in case we need to recreate the fragment
-        outState.putSerializable("selected_item", item);
+        outState.putParcelable("selected_item", item);
     }
 
 }

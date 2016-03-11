@@ -1,12 +1,14 @@
 package com.blstream.kaczynska.fragmentlist;
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 
-public class Item implements Serializable {
+
+public class Item implements Parcelable {
 
     private int id;
     private String title;
-    private int image;
+    private String imageName;
 
     public int getId() {
         return id;
@@ -14,19 +16,25 @@ public class Item implements Serializable {
 
 
 
-    public int getImage() {
-        return image;
+    public String getImage() {
+        return imageName;
     }
 
-    public void setImage(int image) {
-        this.image = image;
+    public void setImage(String image) {
+        this.imageName = image;
     }
 
 
-    public Item(int id, int image) {
+    public Item(int id, String image) {
         this.id = id;
         this.title = "Element no " + id;
-        this.image = image;
+        this.imageName = image;
+    }
+
+    public Item(Parcel in) {
+        this.id = in.readInt();
+        this.title = in.readString();
+        this.imageName = in.readString();
     }
 
     public String getTitle() {
@@ -37,4 +45,28 @@ public class Item implements Serializable {
         this.title = title;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(title);
+        dest.writeString(imageName);
+    }
+
+    public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {
+
+        @Override
+        public Item createFromParcel(Parcel source) {
+            return new Item(source);
+        }
+
+        @Override
+        public Item[] newArray(int size) {
+            return new Item[size];
+        }
+    };
 }

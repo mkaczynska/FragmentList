@@ -2,6 +2,10 @@ package com.blstream.kaczynska.fragmentlist;
 
 
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
@@ -16,24 +20,45 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by user on 10-Mar-16.
- */
+
 public class MyListFragment extends Fragment {
 
     ArrayList<Item> itemList;
-    final static int LISTSIZE = 20;
+    final static int LISTSIZE = 1000;
 
     OnHeadlineSelectedListener mCallback;
 
+
     // The container Activity must implement this interface so the frag can deliver messages
     public interface OnHeadlineSelectedListener {
-        /** Called by HeadlinesFragment when a list item is selected */
+        /**
+         * Called by HeadlinesFragment when a list item is selected
+         */
         public void onHeaderSelected(int position, List<Item> itemList);
     }
 
-    public MyListFragment() {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        itemList = new ArrayList<>();
+        String[] imagesArray = {
+                "earth.jpg",
+                "jupiter.jpg",
+                "moon.jpg",
+                "pluto.jpg",
+                "saturn.jpg"
+        };
+
+
+        for (int itemId = 0; itemId < LISTSIZE; ++itemId) {
+            int choice = itemId % imagesArray.length;
+            Item item = new Item(itemId + 1, imagesArray[choice]);
+            itemList.add(item);
+        }
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,25 +69,11 @@ public class MyListFragment extends Fragment {
         Context context = view.getContext();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.items);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(new MyAdapter(itemList, mCallback));
+        recyclerView.setAdapter(new MyAdapter(context, itemList, mCallback));
+
         return view;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        itemList = new ArrayList<>();
-        int[] imagesArray = {
-                R.drawable.earth,R.drawable.jupiter,R.drawable.moon,R.drawable.pluto,R.drawable.saturn
-        };
-
-        for (int itemId = 0; itemId < LISTSIZE; ++itemId){
-            int choice = itemId % imagesArray.length;
-            Item item = new Item(itemId+1, imagesArray[choice]);
-            itemList.add(item);
-        }
-
-    }
 
     @Override
     public void onStart() {
@@ -73,11 +84,12 @@ public class MyListFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        try {
+
+        if (OnHeadlineSelectedListener.class.isInstance(context)) {
             mCallback = (OnHeadlineSelectedListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnHeadlineSelectedListener");
+        }
+        else {
+            throw new IllegalStateException("Jak to sie stalo?");
         }
     }
 

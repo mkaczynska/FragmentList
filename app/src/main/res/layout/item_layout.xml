@@ -17,7 +17,6 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/earth"
             android:id="@+id/itemImage"/>
 
 
@@ -25,7 +24,6 @@
             android:id="@+id/itemTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Title"
             android:textColor="#333"
             android:textSize="20sp"
             android:layout_alignRight="@+id/imageView"/>

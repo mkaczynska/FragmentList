@@ -3,6 +3,7 @@ package com.blstream.kaczynska.fragmentlist;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MyListFragment.OnHeadlineSelectedListener {
 
-    MyListFragment myListFragment;
+    Fragment myListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +36,15 @@ public class MainActivity extends AppCompatActivity implements MyListFragment.On
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+      protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         getSupportFragmentManager().putFragment(outState, "listFragment", myListFragment);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle outState) {
+        myListFragment = getSupportFragmentManager().getFragment(outState, "listFragment");
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -47,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements MyListFragment.On
 
         Bundle bundle = new Bundle();
         Item item = values.get(position);
-        bundle.putSerializable("selected_item", item);
+        bundle.putParcelable("selected_item", item);
         fragment.setArguments(bundle);
 
 
