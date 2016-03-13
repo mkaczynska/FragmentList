@@ -7,11 +7,11 @@ import android.util.LruCache;
 /**
  * Created by user on 11-Mar-16.
  */
-public abstract class LRUCacheManager {
+public class LRUCacheManager {
 
     private LruCache<String, Bitmap> mMemoryCache;
 
-    public LRUCacheManager(LruCache<String, Bitmap> mMemoryCache) {
+    public LRUCacheManager() {
         // Get max available VM memory, exceeding this amount will throw an
         // OutOfMemory exception. Stored in kilobytes as LruCache takes an
         // int in its constructor.
@@ -34,12 +34,19 @@ public abstract class LRUCacheManager {
     public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
         if (getBitmapFromMemCache(key) == null) {
             mMemoryCache.put(key, bitmap);
+//            System.out.println("addBitmapToMemoryCache: " + key);
         }
     }
 
     public Bitmap getBitmapFromMemCache(String key) {
-        return mMemoryCache.get(key);
+        Bitmap bitmap = mMemoryCache.get(key);
+//        System.out.println("getBitmapFromMemCache: " + key);
+        return bitmap;
     }
+
+//    public void clearCache() {
+//        mMemoryCache.evictAll();
+//    }
 
 
 }

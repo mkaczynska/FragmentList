@@ -10,30 +10,37 @@ public class Item implements Parcelable {
     private String title;
     private String imageName;
 
+
     public int getId() {
         return id;
     }
 
 
-
-    public String getImage() {
+    public String getImageName() {
         return imageName;
     }
+//
+//    public String getImageKey() {
+//        return image.getImageKey();
+//    }
+//
+//
+//    public void setImageKey(String imageKey) {
+//        this.image.setImageKey(imageKey);
+//    }
 
-    public void setImage(String image) {
-        this.imageName = image;
-    }
 
-
-    public Item(int id, String image) {
+    public Item(int id, String imageName) {
         this.id = id;
         this.title = "Element no " + id;
-        this.imageName = image;
+        this.imageName = imageName;
     }
 
     public Item(Parcel in) {
         this.id = in.readInt();
         this.title = in.readString();
+//        this.image.setImageName(in.readString());
+//        this.image.setImageKey(in.readString());
         this.imageName = in.readString();
     }
 
@@ -55,6 +62,8 @@ public class Item implements Parcelable {
         dest.writeInt(id);
         dest.writeString(title);
         dest.writeString(imageName);
+//        dest.writeString(image.getImageName());
+//        dest.writeString(image.getImageKey());
     }
 
     public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {

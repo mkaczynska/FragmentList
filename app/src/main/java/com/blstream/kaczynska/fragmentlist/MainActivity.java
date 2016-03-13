@@ -46,6 +46,13 @@ public class MainActivity extends AppCompatActivity implements MyListFragment.On
         myListFragment = getSupportFragmentManager().getFragment(outState, "listFragment");
         super.onSaveInstanceState(outState);
     }
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        LRUCacheManager lruCacheManager = new LRUCacheManager();
+//        lruCacheManager.clearCache();
+//
+//    }
 
     @Override
     public void onHeaderSelected(int position, List<Item> values) {

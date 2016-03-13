@@ -1,33 +1,36 @@
 package com.blstream.kaczynska.fragmentlist;
 
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.widget.ImageView;
-
 import java.lang.ref.WeakReference;
 
-import static com.blstream.kaczynska.fragmentlist.MyAdapter.decodeSampledBitmapFromDrawable;
 
-
-public class ImageLoaderFromAssets extends AsyncTask<ImageLoaderParam, Void, Bitmap> {
+public class ImageLoaderAsyncTask extends AsyncTask<ImageLoaderParams, Void, Bitmap> {
 
     String imageName;
+    String imageKey;
     int outWidth;
     int outHeight;
+    AssetManager assetManager;
 
     private final WeakReference<ImageView> imageViewReference;
 
-    public ImageLoaderFromAssets(ImageView imageView) {
+    public ImageLoaderAsyncTask(ImageView imageView) {
         imageViewReference = new WeakReference<ImageView>(imageView);
     }
 
     @Override
-    protected Bitmap doInBackground(ImageLoaderParam... params) {
+    protected Bitmap doInBackground(ImageLoaderParams... params) {
         imageName = params[0].imageName;
+        imageKey = params[0].imageKey;
         outWidth = params[0].outWidth;
-        outHeight = params[0].outHeigth;
+        outHeight = params[0].outHeight;
+        assetManager = params[0].assetManager;
 
-        return decodeSampledBitmapFromDrawable(imageName, outWidth, outHeight);
+
+        return BitmapDecoder.decodeSampledBitmapFromAssets(assetManager, imageName, imageKey, outWidth, outHeight);
     }
 
     @Override
@@ -37,9 +40,4 @@ public class ImageLoaderFromAssets extends AsyncTask<ImageLoaderParam, Void, Bit
                 imageView.setImageBitmap(bitmap);
             }
     }
-
-
-
-
-
 }
