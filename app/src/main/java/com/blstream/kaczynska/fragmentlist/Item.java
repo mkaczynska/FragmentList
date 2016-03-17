@@ -39,8 +39,6 @@ public class Item implements Parcelable {
     public Item(Parcel in) {
         this.id = in.readInt();
         this.title = in.readString();
-//        this.image.setImageName(in.readString());
-//        this.image.setImageKey(in.readString());
         this.imageName = in.readString();
     }
 
@@ -62,8 +60,6 @@ public class Item implements Parcelable {
         dest.writeInt(id);
         dest.writeString(title);
         dest.writeString(imageName);
-//        dest.writeString(image.getImageName());
-//        dest.writeString(image.getImageKey());
     }
 
     public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {
